@@ -1,10 +1,8 @@
 import socket
+from math import sqrt
 
-import numpy as np
 import cv2
-from scipy.signal import argrelextrema
-from skimage.measure import regionprops, label
-from math import dist, sqrt
+import numpy as np
 
 WINDOW_SCREEN = 'screenshot'
 IMAGE_SIZE = 40002
@@ -29,7 +27,7 @@ def find_extremes(image):
             current_value = image[i, j]
             if (image[i, j + 1] < current_value and image[i, j - 1] < current_value
                     and image[i + 1, j] < current_value and image[i - 1, j] < current_value):
-                extremes.append((i, j))
+                extremes.append((j, i))
     return extremes
 
 
@@ -48,20 +46,24 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         pos1 = np.unravel_index(im1.argmax(), im1.shape)
         res = np.abs(np.array(pos1))
 
-        sock.send(f"{res[0]}".encode())
-        print(sock.recv(4))
-
         extremes = find_extremes(im1)
 
-        distance = sqrt((extremes[0][0] - extremes[1][0]) ** 2 + (extremes[0][1] - extremes[1][1]) ** 2)
+        if len(extremes) == 2:
+            distance = round(sqrt((extremes[0][0] - extremes[1][0]) ** 2 + (extremes[0][1] - extremes[1][1]) ** 2), 1)
+        else:
+            distance = 0
 
-        distance = round(distance * 10) / 10
-
-        cv2.imshow(WINDOW_SCREEN, im1)
+        im1 = cv2.cvtColor(im1, cv2.COLOR_GRAY2BGR)
+        for extreme in extremes:
+            cv2.drawMarker(im1, extreme, (0, 255, 0), markerType=cv2.MARKER_CROSS, markerSize=1)
 
         result = str(distance).encode()
 
-        cv2.waitKey(0)
+        print(distance)
 
         sock.send(result)
         beat = sock.recv(20)
+        print(beat)
+
+        cv2.imshow(WINDOW_SCREEN, im1)
+        cv2.waitKey(0)
