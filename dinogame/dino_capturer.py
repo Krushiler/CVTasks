@@ -39,10 +39,10 @@ class DinoCapturer:
         return screenshot
 
     def find_bottom_obstacle(self, horizontal_offset):
-        monitor = {"top": self.dino_location[1],
-                   "left": self.dino_location[0] + self.dino_width + horizontal_offset,
-                   "width": self.dino_width,
-                   "height": self.dino_height - 15}
+        monitor = {"top": self.dino_location[1] + 5,
+                   "left": self.dino_location[0] + self.dino_width,
+                   "width": self.dino_width + horizontal_offset,
+                   "height": 25}
 
         screenshot = np.array(self.capturer.grab(monitor))
 
