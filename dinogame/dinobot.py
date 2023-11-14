@@ -31,7 +31,7 @@ def calculate_offset():
 def calculate_crouch_delay(score):
     if score < 500:
         return 0.3
-    return max(0.3 - 0.3 * (score // 150 * 150) / 4000, 0.1)
+    return max(0.3 - 0.3 * (score // 150 * 150) / 10000, 0.1)
 
 
 def analyze_bottom_obstacle(offset, score):
