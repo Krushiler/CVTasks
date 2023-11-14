@@ -18,22 +18,8 @@ def time_diff_to_score(c_time):
 
 
 def map_score_to_offset(score):
-    offset = int((score // 200) * 5)
+    offset = int((score // 100) * 7.5)
     return offset
-
-
-def can_crouch_in_air(horizontal_offset):
-    above_dino_position = dino_capturer.find_above_dino()
-    dino_position = dino_capturer.find_on_dino_position()
-    empty_above = np.all(above_dino_position == 0)
-    empty_on_dino = np.all(dino_position == 0)
-    print(empty_on_dino)
-    return empty_above or empty_on_dino
-
-
-def wait_until_can_jump(horizontal_offset):
-    while not can_crouch_in_air(horizontal_offset):
-        time.sleep(0.01)
 
 
 def calculate_offset():
@@ -43,13 +29,9 @@ def calculate_offset():
 
 
 def calculate_crouch_delay(score):
-    return max(0.3 - 0.3 * (score // 150 * 150) / 3000, 0.1)
-
-
-def analyze_crouch(offset):
-    if can_crouch_in_air(horizontal_offset=offset):
-        if not keyboard.is_pressed('down'):
-            keyboard.press('down')
+    if score < 500:
+        return 0.3
+    return max(0.3 - 0.3 * (score // 150 * 150) / 4000, 0.1)
 
 
 def analyze_bottom_obstacle(offset, score):
@@ -61,12 +43,12 @@ def analyze_bottom_obstacle(offset, score):
         time.sleep(calculate_crouch_delay(score))
         keyboard.release('space')
         keyboard.press('down')
+        time.sleep(0.15)
 
 
 def play_game_step():
     offset, score = calculate_offset()
     analyze_bottom_obstacle(offset, score)
-    # analyze_crouch(offset)
     if cv2.waitKey(1) & 0xFF == ord('q'):
         exit()
 

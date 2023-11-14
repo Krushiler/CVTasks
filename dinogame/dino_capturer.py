@@ -17,27 +17,6 @@ class DinoCapturer:
         screenshot = self.capturer.grab(self.monitor)
         return np.array(screenshot)
 
-    def find_above_dino(self):
-        monitor = {"top": self.dino_location[1] - self.dino_height,
-                   "left": self.dino_location[0],
-                   "width": self.dino_width,
-                   "height": 20}
-
-        screenshot = np.array(self.capturer.grab(monitor))
-        screenshot = cv2.Canny(screenshot, 100, 200)
-        return screenshot
-
-    def find_on_dino_position(self):
-        monitor = {"top": self.dino_location[1] + 15,
-                   "left": self.dino_location[0],
-                   "width": self.dino_width,
-                   "height": 5}
-
-        screenshot = np.array(self.capturer.grab(monitor))
-        screenshot = cv2.Canny(screenshot, 100, 200)
-
-        return screenshot
-
     def find_bottom_obstacle(self, horizontal_offset):
         monitor = {"top": self.dino_location[1] + 5,
                    "left": self.dino_location[0] + self.dino_width,
