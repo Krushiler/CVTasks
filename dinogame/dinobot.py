@@ -12,6 +12,7 @@ start_time = time.time()
 
 WINDOW_SCREEN = 'screenshot'
 
+
 # cv2.namedWindow(WINDOW_SCREEN, cv2.WINDOW_NORMAL)
 
 
@@ -20,7 +21,8 @@ def time_diff_to_score(c_time):
 
 
 def map_score_to_offset(score):
-    return int(score // 100 + 20)
+    offset = int(score // 20 + 20)
+    return offset
 
 
 def can_crouch_in_air(horizontal_offset):
@@ -55,11 +57,9 @@ def analyze_bottom_obstacle(offset):
 
     if np.any(bottom_obstacles_image < 150):
         keyboard.release('down')
-        time.sleep(0.01)
         keyboard.press('space')
-        time.sleep(0.01)
-        keyboard.release('space')
         time.sleep(0.3)
+        keyboard.release('space')
         keyboard.press('down')
 
 
