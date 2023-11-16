@@ -19,8 +19,8 @@ def time_diff_to_score(c_time):
 
 def map_score_to_offset(score):
     if score < 1000:
-        return int((score // 100) * 8)
-    offset = int(min((score // 100) * 15, 190))
+        return int((score // 100) * 6.5)
+    offset = int(min((score // 100) * 15, 200))
     return offset
 
 
@@ -31,7 +31,7 @@ def calculate_offset():
 
 
 def calculate_crouch_delay(score):
-    return 0.3
+    return 0.28
 
 
 def analyze_bottom_obstacle(offset, score):
@@ -42,6 +42,7 @@ def analyze_bottom_obstacle(offset, score):
         keyboard.press('space')
         time.sleep(calculate_crouch_delay(score))
         keyboard.release('space')
+        time.sleep(0.01)
         keyboard.press('down')
         time.sleep(0.15)
 
