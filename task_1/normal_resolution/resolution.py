@@ -2,7 +2,7 @@ import numpy as np
 
 for i in range(6):
     filename = f"data/figure{i+1}.txt"
-    with open(filename, "r") as file:
+    with open(filename, "r") as file:   
         max_size_mm = float(file.readline())
         data = np.loadtxt(file, dtype=int)
 
