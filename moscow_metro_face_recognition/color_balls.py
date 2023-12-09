@@ -10,10 +10,10 @@ class BallColor:
         self.debug_color = debug_color
 
 
-blue_color = BallColor((90, 100, 100), (110, 255, 255), (255, 0, 0))
-red_color = BallColor((170, 100, 100), (190, 255, 255), (0, 0, 255))
-yellow_color = BallColor((20, 100, 100), (40, 255, 255), (0, 255, 255))
-green_color = BallColor((50, 100, 100), (90, 255, 255), (0, 255, 0))
+blue_color = BallColor((87, 100, 100), (107, 255, 255), (255, 0, 0))
+red_color = BallColor((-1, 150, 150), (19, 255, 255), (0, 0, 255))
+yellow_color = BallColor((26, 100, 100), (46, 255, 255), (0, 255, 255))
+green_color = BallColor((64, 100, 100), (84, 255, 255), (0, 255, 0))
 
 colors = [blue_color, yellow_color, green_color]
 
