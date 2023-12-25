@@ -2,11 +2,10 @@ import numpy as np
 import zmq
 import cv2
 
-# context = zmq.Context()
-# socket = context.socket(zmq.SUB)
-# socket.connect("tcp://192.168.0.105:6556")
-# socket.subscribe(b'')
-#
+context = zmq.Context()
+socket = context.socket(zmq.SUB)
+socket.connect("tcp://192.168.0.105:6556")
+socket.subscribe(b'')
 
 frame_t = [[]]
 
@@ -28,6 +27,9 @@ circles = []
 def analyze_image(frame):
     global frame_t
     frame_t = frame
+
+    rects = []
+    circles = []
 
     frame_t = cv2.cvtColor(frame_t, cv2.COLOR_BGR2LUV)
 
@@ -68,15 +70,19 @@ def analyze_image(frame):
             else:
                 circles.append((center, rad))
 
-    print(f'rects: {len(rects)}')
-    print(f'circles: {len(circles)}')
-    print(f'total: {len(rects) + len(circles)}')
+    cv2.putText(frame, f'rects: {len(rects)}', (16, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 255), 2)
+    cv2.putText(frame, f'circles: {len(circles)}', (16, 300), cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 0, 255), 2)
 
     cv2.imshow('frame', frame)
-    cv2.waitKey(0)
 
 
 prev_frame = None
 
-frame = cv2.imread('img.jpg')
-analyze_image(frame)
+while True:
+    frame = socket.recv()
+    frame = np.frombuffer(frame, np.uint8)
+    frame = cv2.imdecode(frame, -1)
+    analyze_image(frame)
+
+    if cv2.waitKey(1) == ord('q'):
+        break
